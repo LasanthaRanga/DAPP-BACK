@@ -26,7 +26,7 @@ const allowedOrigins = [
     'http://localhost:4200',
     'http://localhost:8080',
     'http://localhost:8100',    
-    'http://dappback.tradexzone.com',
+    'http://dapp.tradexzone.com',
 ];
 
 const corsOptions = {
