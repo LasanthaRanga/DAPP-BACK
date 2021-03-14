@@ -25,12 +25,8 @@ const allowedOrigins = [
     'http://supbox.lk',
     'http://localhost:4200',
     'http://localhost:8080',
-    'http://localhost:8100',
-    'https://kumi.lk',
-    'http://kumi.lk',
-    'http://testing.probox.lk',
-    'https://testing.probox.lk',
-
+    'http://localhost:8100',    
+    'http://dappback.tradexzone.com',
 ];
 
 const corsOptions = {
