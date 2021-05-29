@@ -88,8 +88,8 @@ exports.addDID = (req, res, next) => {
     try {
         var day = dateFormat(new Date(), "yyyy-mm-dd h:MM:ss");
         mycon.execute("INSERT INTO `user_m1` ( `email`, `mobileno`, `status`, `dateTime`, `utypeId`, `leader`, `DID`, `name`, `address`, `city`, `whatsapp`, `nic` ) " +
-            " VALUES	(  '" + this.RES(req.body.email) + "', '" + this.RES(req.body.mobileno) + "', 0, '" + day + "', 6, '" + req.body.leader + "', '" + this.RES(req.body.DID) +
-            "', '" + this.RES(req.body.name) + "', '" + this.RES(req.body.address) + "', '" + this.RES(req.body.city) + "', '" + this.RES(req.body.whatsapp) + "', '" + this.RES(req.body.nic) + "' )",
+            " VALUES	(  '" + req.body.email + "', '" + req.body.mobileno + "', 0, '" + day + "', 6, '" + req.body.leader + "', '" + req.body.DID +
+            "', '" + this.RES(req.body.name) + "', '" + this.RES(req.body.address) + "', '" + req.body.city + "', '" + req.body.whatsapp + "', '" + req.body.nic + "' )",
             (error, rows, fildData) => {
                 if (!error) {
                     res.send(rows);
@@ -111,7 +111,7 @@ exports.updateDID = (req, res, next) => {
     try {
         var day = dateFormat(new Date(), "yyyy-mm-dd h:MM:ss");
         mycon.execute("UPDATE `user_m1` SET `email`='" + req.body.email + "',`mobileno`='" + req.body.mobileno +
-            "',`authcode`='1234',`status`=1,`dateTime`='" + day + "',`utypeId`=6,`leader`=" + req.body.leader + ",`DID`='" +req.body.DID+
+            "',`authcode`='1234',`status`=1,`dateTime`='" + day + "',`utypeId`=6,`leader`=" + req.body.leader + ",`DID`='" + req.body.DID +
             "',`name`='" + req.body.name + "',`address`='" + req.body.address + "',`city`='" + req.body.city +
             "',`whatsapp`='" + req.body.whatsapp + "', `nic`='" + req.body.nic + "' WHERE `idUser`=" + req.body.uid,
             (error, rows, fildData) => {
