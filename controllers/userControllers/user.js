@@ -89,7 +89,7 @@ exports.addDID = (req, res, next) => {
         var day = dateFormat(new Date(), "yyyy-mm-dd h:MM:ss");
         mycon.execute("INSERT INTO `user_m1` ( `email`, `mobileno`, `status`, `dateTime`, `utypeId`, `leader`, `DID`, `name`, `address`, `city`, `whatsapp`, `nic` ) " +
             " VALUES	(  '" + req.body.email + "', '" + req.body.mobileno + "', 0, '" + day + "', 6, '" + req.body.leader + "', '" + req.body.DID +
-            "', '" + this.RES(req.body.name) + "', '" + this.RES(req.body.address) + "', '" + req.body.city + "', '" + req.body.whatsapp + "', '" + req.body.nic + "' )",
+            "', '" + req.body.name + "', '" + req.body.address + "', '" + req.body.city + "', '" + req.body.whatsapp + "', '" + req.body.nic + "' )",
             (error, rows, fildData) => {
                 if (!error) {
                     res.send(rows);
