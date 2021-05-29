@@ -5,6 +5,27 @@ const userType = require('../controllers/userControllers/usetType');
 const privilage = require('../controllers/userControllers/privilege');
 const checkAuth = require('../middleware/check-auth');
 
+
+//DAPP
+router.post("/searchByDID", user.searchByDID);
+router.post("/addDID", user.addDID);
+router.post("/updateDID", user.updateDID);
+router.post("/getMeeting", user.getMeeting);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //user
 router.post("/getAllUsers", user.getAllUsers);
 router.post("/getUsersList", user.getUsersList);
@@ -48,6 +69,13 @@ router.post("/getTranings", user.getTranings);
 router.post("/getTraningsByUsers", user.getTraningsByUsers);
 router.post("/deleteTraning", user.deleteTraning);
 router.post("/setTrening", user.setTrening);
+
+
+
+
+
+router.post("/getOldData", user.getOldData);
+router.post("/setOldTrening", user.setOldTrening);
 
 
 

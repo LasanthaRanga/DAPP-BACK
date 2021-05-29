@@ -31,6 +31,122 @@ exports.realEscapeString = (str) => {
     });
 }
 
+exports.RES = (str) => {
+    console.log(str);
+    return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
+        switch (char) {
+            case "\0":
+                return "\\0";
+            case "\x08":
+                return "\\b";
+            case "\x09":
+                return "\\t";
+            case "\x1a":
+                return "\\z";
+            case "\n":
+                return "\\n";
+            case "\r":
+                return "\\r";
+            case "\"":
+            case "'":
+            case "\\":
+            case "%":
+                return "\\" + char; // prepends a backslash to backslash, percent,
+            // and double/single quotes
+        }
+    });
+}
+
+
+
+
+
+
+//DAPP ===================================================================
+exports.searchByDID = (req, res, next) => {
+    try {
+        mycon.execute("SELECT user_m1.idUser,user_m1.email,user_m1.pword,user_m1.mobileno,user_m1.authcode,user_m1.`status`,user_m1.dateTime,user_m1.utypeId,user_m1.leader,user_m1.DID,user_m1.`name`,user_m1.address,user_m1.city,user_m1.whatsapp,user_m1.others,user_m1.job,user_m1.olduid,user_m1.other,user_m1.nic,user_m1.wallet,user_m1.trening_1,user_m1.trening_2 FROM user_m1 WHERE user_m1.DID=" + req.body.did,
+            (error, rows, fildData) => {
+                if (!error) {
+                    if (rows.length > 0) {
+                        res.send(rows);
+                    } else {
+                        res.send({ no: 'no' });
+                    }
+                } else {
+                    // console.log(error);
+                    res.send({ 'no': 'no' });
+                }
+            });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
+}
+
+exports.addDID = (req, res, next) => {
+    try {
+        var day = dateFormat(new Date(), "yyyy-mm-dd h:MM:ss");
+        mycon.execute("INSERT INTO `user_m1` ( `email`, `mobileno`, `status`, `dateTime`, `utypeId`, `leader`, `DID`, `name`, `address`, `city`, `whatsapp`, `nic` ) " +
+            " VALUES	(  '" + this.RES(req.body.email) + "', '" + this.RES(req.body.mobileno) + "', 0, '" + day + "', 6, '" + req.body.leader + "', '" + this.RES(req.body.DID) +
+            "', '" + this.RES(req.body.name) + "', '" + this.RES(req.body.address) + "', '" + this.RES(req.body.city) + "', '" + this.RES(req.body.whatsapp) + "', '" + this.RES(req.body.nic) + "' )",
+            (error, rows, fildData) => {
+                if (!error) {
+                    res.send(rows);
+                } else {
+                    console.log(error);
+                    res.send({ 'no': 'no' });
+                }
+            });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
+}
+
+
+
+exports.updateDID = (req, res, next) => {
+    console.log(req.body);
+    try {
+        var day = dateFormat(new Date(), "yyyy-mm-dd h:MM:ss");
+        mycon.execute("UPDATE `user_m1` SET `email`='" + req.body.email + "',`mobileno`='" + req.body.mobileno +
+            "',`authcode`='1234',`status`=1,`dateTime`='" + day + "',`utypeId`=6,`leader`=" + req.body.leader + ",`DID`='" +req.body.DID+
+            "',`name`='" + req.body.name + "',`address`='" + req.body.address + "',`city`='" + req.body.city +
+            "',`whatsapp`='" + req.body.whatsapp + "', `nic`='" + req.body.nic + "' WHERE `idUser`=" + req.body.uid,
+            (error, rows, fildData) => {
+                if (!error) {
+                    res.send(rows);
+                } else {
+                    console.log(error);
+                    res.send({ 'no': 'no' });
+                }
+            });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
+}
+
+
+exports.getMeeting = (req, res, next) => {
+    console.log(req.body);
+    try {
+        var day = dateFormat(new Date(), "yyyy-mm-dd h:MM:ss");
+        mycon.execute("SELECT meeting.id,meeting.shedule,meeting.link,meeting.pword,meeting.`status`,meeting.meetingid FROM meeting WHERE meeting.`status`=1",
+            (error, rows, fildData) => {
+                if (!error) {
+                    res.send(rows);
+                } else {
+                    console.log(error);
+                    res.send({ 'no': 'no' });
+                }
+            });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
+}
 
 
 
@@ -401,7 +517,7 @@ exports.getUsersList = (req, res, next) => {
 
 exports.getUsersListByLeader = (req, res, next) => {
     try {
-        mycon.execute("SELECT `user`.idUser,uservalue.`value`,uservalue.keyId,userkey.keyOder,userkey.`key` FROM `user` INNER JOIN uservalue ON uservalue.userId=`user`.idUser INNER JOIN userkey ON uservalue.keyId=userkey.idUserKey WHERE `user`.leader='"+req.body.leader+"' ORDER BY `user`.idUser ASC,userkey.keyOder ASC", (er, ro, fi) => {
+        mycon.execute("SELECT `user`.idUser,uservalue.`value`,uservalue.keyId,userkey.keyOder,userkey.`key` FROM `user` INNER JOIN uservalue ON uservalue.userId=`user`.idUser INNER JOIN userkey ON uservalue.keyId=userkey.idUserKey WHERE `user`.leader='" + req.body.leader + "' ORDER BY `user`.idUser ASC,userkey.keyOder ASC", (er, ro, fi) => {
             if (!er) {
                 let uid = 0;
                 let arr = new Array();
@@ -939,3 +1055,180 @@ exports.setTrening = (req, res, next) => {
 }
 
 
+exports.getOldData = (req, res, next) => {
+    try {
+        mycon.execute("SELECT uservalue.idUserValue,uservalue.userId,CASE WHEN uservalue.keyId='1' THEN uservalue.`value` END AS DID,CASE WHEN uservalue.keyId='2' THEN uservalue.`value` END AS NameEka,CASE WHEN uservalue.keyId='4' THEN uservalue.`value` END AS Leader,CASE WHEN uservalue.keyId='5' THEN uservalue.`value` END AS Address,CASE WHEN uservalue.keyId='8' THEN uservalue.`value` END AS City,CASE WHEN uservalue.keyId='9' THEN uservalue.`value` END AS Mobile_Number,CASE WHEN uservalue.keyId='10' THEN uservalue.`value` END AS Whats_App_Number,CASE WHEN uservalue.keyId='11' THEN uservalue.`value` END AS Others,CASE WHEN uservalue.keyId='12' THEN uservalue.`value` END AS Other_1,CASE WHEN uservalue.keyId='13' THEN uservalue.`value` END AS Other_2,CASE WHEN uservalue.keyId='14' THEN uservalue.`value` END AS Other_3,CASE WHEN uservalue.keyId='21' THEN uservalue.`value` END AS National_ID_Number,CASE WHEN uservalue.keyId='22' THEN uservalue.`value` END AS Email,CASE WHEN uservalue.keyId='23' THEN uservalue.`value` END AS Wallet_Address FROM uservalue WHERE userId > 5 ORDER BY userId ASC",
+            (error, rows, fildData) => {
+                if (!error) {
+
+                    var uid = 0;
+                    var arr = [];
+                    var obj = {
+                        userId: 0,
+                        DID: null,
+                        NameEka: null,
+                        Leader: null,
+                        Address: null,
+                        City: null,
+                        Mobile_Number: null,
+                        Whats_App_Number: null,
+                        Others: null,
+                        Other_1: null,
+                        Other_2: null,
+                        Other_3: null,
+                        National_ID_Number: null,
+                        Email: null,
+                        Wallet_Address: null
+                    }
+
+
+                    const length = rows.length;
+                    let x = 0;
+                    recall = () => {
+                        r = rows[x];
+                        if (uid != r.userId) {
+                            arr.push(obj);
+                            this.insertOBJ(obj);
+
+                            obj.DID = null;
+                            obj.NameEka = null;
+                            obj.Leader = null;
+                            obj.Address = null;
+                            obj.City = null;
+                            obj.Mobile_Number = null;
+                            obj.Whats_App_Number = null;
+                            obj.Others = null;
+                            obj.Other_1 = null;
+                            obj.Other_2 = null;
+                            obj.Other_3 = null;
+                            obj.National_ID_Number = null;
+                            obj.Email = null;
+                            obj.Wallet_Address = null;
+
+                            uid = r.userId;
+                            obj.userId = r.userId;
+
+                            if (r.DID) obj.DID = r.DID;
+                            if (r.NameEka) obj.NameEka = r.NameEka;
+                            if (r.Leader) obj.Leader = r.Leader;
+                            if (r.Address) obj.Address = r.Address;
+                            if (r.City) obj.City = r.City;
+                            if (r.Mobile_Number) obj.Mobile_Number = r.Mobile_Number;
+                            if (r.Whats_App_Number) obj.Whats_App_Number = r.Whats_App_Number;
+                            if (r.Others) obj.Others = r.Others;
+                            if (r.Other_1) obj.Other_1 = r.Other_1;
+                            if (r.Other_2) obj.Other_2 = r.Other_2;
+                            if (r.Other_3) obj.Other_3 = r.Other_3;
+                            if (r.National_ID_Number) obj.National_ID_Number = r.National_ID_Number;
+                            if (r.Email) obj.Email = r.Email;
+                            if (r.Wallet_Address) obj.Wallet_Address = r.Wallet_Address;
+
+                        } else {
+
+                            if (r.DID) obj.DID = r.DID;
+                            if (r.NameEka) obj.NameEka = r.NameEka;
+                            if (r.Leader) obj.Leader = r.Leader;
+                            if (r.Address) obj.Address = r.Address;
+                            if (r.City) obj.City = r.City;
+                            if (r.Mobile_Number) obj.Mobile_Number = r.Mobile_Number;
+                            if (r.Whats_App_Number) obj.Whats_App_Number = r.Whats_App_Number;
+                            if (r.Others) obj.Others = r.Others;
+                            if (r.Other_1) obj.Other_1 = r.Other_1;
+                            if (r.Other_2) obj.Other_2 = r.Other_2;
+                            if (r.Other_3) obj.Other_3 = r.Other_3;
+                            if (r.National_ID_Number) obj.National_ID_Number = r.National_ID_Number;
+                            if (r.Email) obj.Email = r.Email;
+                            if (r.Wallet_Address) obj.Wallet_Address = r.Wallet_Address;
+                        }
+
+                        setTimeout(() => {
+                            if (rows.length > x) {
+                                x++;
+                                console.log(x);
+                                recall();
+                            } else {
+                                res.send(arr);
+                            }
+                        }, 10);
+
+                    }
+
+                    recall();
+
+
+
+
+
+                } else {
+                    console.log(error);
+                }
+            });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+    }
+}
+
+exports.insertOBJ = (obj) => {
+    console.log(obj);
+
+    try {
+        mycon.execute("INSERT INTO `user` (`email`,`mobileno`,`status`,`utypeId`,`leader`,`DID`,`name`,`address`,`city`,`whatsapp`,`others`,`job`,`olduid`,`other`,`nic`,`wallet`)" +
+            " VALUES ('" + obj.Email + "','" + obj.Mobile_Number + "',0,1,'" + obj.Leader + "','" + obj.DID + "','" + obj.NameEka + "','" + obj.Address + "','" + obj.City + "','" + obj.Whats_App_Number + "','" + obj.Others + "','" + obj.Other_1 + "','" + obj.userId + "','" + obj.Other_3 + "','" + obj.National_ID_Number + "','" + obj.Wallet_Address + "')", (e, r, f) => {
+                if (!e) {
+                    console.log(r);
+                }
+            })
+    } catch (error) {
+
+    }
+}
+
+exports.setOldTrening = (req, res, next) => {
+
+    try {
+        mycon.execute("SELECT `user`.idUser,user_has_traning.user_id,traning.type_id,traning.plase,traning.date FROM `user` INNER JOIN user_has_traning ON user_has_traning.user_id=`user`.olduid INNER JOIN traning ON traning.idTraning=user_has_traning.traning_id", (e, r, f) => {
+            if (!e) {
+
+
+                const length = r.length;
+                let x = 0;
+
+                reCallOk = () => {
+                    let element = r[x];
+                    var uid = element.idUser;
+                    var type = element.type_id;
+                    var plase = element.plase + ' - ' + element.date;
+                    console.log(uid + ' - ' + type + ' - ' + plase);
+
+                    if (type == 1) {
+                        mycon.execute("UPDATE `user` SET `trening_1`='" + plase + "' WHERE `idUser`=" + uid, (ee, rr, ff) => {
+                            console.log(rr);
+                        })
+                    }
+
+                    if (type == 2) {
+                        mycon.execute("UPDATE `user` SET a`trening_2`='" + plase + "' WHERE `idUser`=" + uid, (ee, rr, ff) => {
+                            console.log(rr);
+                        })
+                    }
+
+                    setTimeout(() => {
+                        if (length > x) {
+                            reCallOk();
+                        }
+                        x++;
+                    }, 100)
+                }
+
+                reCallOk();
+
+
+
+
+            }
+        })
+    } catch (error) {
+        console.log(error);
+    }
+}
