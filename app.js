@@ -25,8 +25,11 @@ const allowedOrigins = [
     'http://supbox.lk',
     'http://localhost:4200',
     'http://localhost:8080',
-    'http://localhost:8100',    
+    'http://localhost:8100',
     'http://dapp.tradexzone.com',
+    'https://dapp.tradexzone.com',
+    'http://tradexzone.com',
+    'https://tradexzone.com'
 ];
 
 const corsOptions = {
