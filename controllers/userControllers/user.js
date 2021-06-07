@@ -87,7 +87,7 @@ exports.searchByDID = (req, res, next) => {
 exports.addDID = (req, res, next) => {
     try {
         var day = dateFormat(new Date(), "yyyy-mm-dd h:MM:ss");
-        mycon.execute("INSERT INTO `user_m1` ( `email`, `mobileno`, `authcode` `status`, `dateTime`, `utypeId`, `leader`, `DID`, `name`, `address`, `city`, `whatsapp`, `nic` ) " +
+        mycon.execute("INSERT INTO `user_m1` ( `email`, `mobileno`, `authcode`, `status`, `dateTime`, `utypeId`, `leader`, `DID`, `name`, `address`, `city`, `whatsapp`, `nic` ) " +
             " VALUES	(  '" + req.body.email + "', '" + req.body.mobileno + "','2', 0, '" + day + "', 6, '" + req.body.leader + "', '" + req.body.DID +
             "', '" + req.body.name + "', '" + req.body.address + "', '" + req.body.city + "', '" + req.body.whatsapp + "', '" + req.body.nic + "' )",
             (error, rows, fildData) => {
