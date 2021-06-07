@@ -87,8 +87,8 @@ exports.searchByDID = (req, res, next) => {
 exports.addDID = (req, res, next) => {
     try {
         var day = dateFormat(new Date(), "yyyy-mm-dd h:MM:ss");
-        mycon.execute("INSERT INTO `user_m1` ( `email`, `mobileno`, `status`, `dateTime`, `utypeId`, `leader`, `DID`, `name`, `address`, `city`, `whatsapp`, `nic` ) " +
-            " VALUES	(  '" + req.body.email + "', '" + req.body.mobileno + "', 0, '" + day + "', 6, '" + req.body.leader + "', '" + req.body.DID +
+        mycon.execute("INSERT INTO `user_m1` ( `email`, `mobileno`, `authcode` `status`, `dateTime`, `utypeId`, `leader`, `DID`, `name`, `address`, `city`, `whatsapp`, `nic` ) " +
+            " VALUES	(  '" + req.body.email + "', '" + req.body.mobileno + "','2', 0, '" + day + "', 6, '" + req.body.leader + "', '" + req.body.DID +
             "', '" + req.body.name + "', '" + req.body.address + "', '" + req.body.city + "', '" + req.body.whatsapp + "', '" + req.body.nic + "' )",
             (error, rows, fildData) => {
                 if (!error) {
@@ -111,7 +111,7 @@ exports.updateDID = (req, res, next) => {
     try {
         var day = dateFormat(new Date(), "yyyy-mm-dd h:MM:ss");
         mycon.execute("UPDATE `user_m1` SET `email`='" + req.body.email + "',`mobileno`='" + req.body.mobileno +
-            "',`authcode`='1234',`status`=1,`dateTime`='" + day + "',`utypeId`=6,`leader`=" + req.body.leader + ",`DID`='" + req.body.DID +
+            "',`authcode`='2',`status`=1,`dateTime`='" + day + "',`utypeId`=6,`leader`=" + req.body.leader + ",`DID`='" + req.body.DID +
             "',`name`='" + req.body.name + "',`address`='" + req.body.address + "',`city`='" + req.body.city +
             "',`whatsapp`='" + req.body.whatsapp + "', `nic`='" + req.body.nic + "' WHERE `idUser`=" + req.body.uid,
             (error, rows, fildData) => {
